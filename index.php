@@ -16,19 +16,21 @@ $geslachtError = "";
 
 $message = "";
 $errorMsg = "";
-$errors = array('form'=>array('gNaam'=>"U heeft geen naam ingevuld.",
-							'gAnaam'=>"U heeft geen achternaam ingevuld.",
-							'gStraat'=>"U heeft geen straat ingevuld.",
-							'gHuisnr'=>"U heeft geen huisnummer ingevuld.",
-							'gEmail'=>"U heeft geen e-mail ingevuld.",
-							'gDatum'=>"U heeft geen datum opgegeven.",
-							'gGeslacht'=>"Kies een geslacht.",
-							'ongEmail'=>"Geen geldig e-mail adress.",
-							'ongPostcode'=>"Geen geldig postcode.",
-							'ongHuisnr'=>"Geen geldig huisnummer",
-							'ongWoonplts'=>"Geen geldig woonplaats",
-							'ongDatum'=>"Datum format moet dd-mm-yyyy (23-01-2000) zijn.",
-							'toekDatum'=>"Datum ligt te ver in de toekomst")
+$errors = array('form'=>array('gNaam'=>"U heeft geen naam ingevuld",
+							'gAnaam'=>"U heeft geen achternaam ingevuld",
+							'gStraat'=>"U heeft geen straat ingevuld",
+							'gHuisnr'=>"U heeft geen huisnummer ingevuld",
+							'gEmail'=>"U heeft geen e-mail ingevuld",
+							'gDatum'=>"U heeft geen datum opgegeven",
+							'gGeslacht'=>"Kies een geslacht",
+							'ongEmail'=>"Geen geldig e-mail adress. E-mail moet eindigen op '.nl'",
+							'ongPostcode'=>"Postcode moet bestaan uit 4 cijfers en 2 letters (vb. 1234ab)",
+							'ongHuisnr'=>"Huisnummer moet bestaan uit alleen nummers of een nummer met één of meerdere letters (vb. 123 of 123abc)",
+							'ongWoonplts'=>"Woonplaats mag alleen bestaan uit letters",
+							'ongDatum'=>"Datum format moet dd-mm-yyyy zijn (vb. 23-01-2000)",
+							'toekDatum'=>"Datum ligt te ver in de toekomst",
+							'naamEmail'=>"'naam' gedeelte van uw e-mail moet minimaal 2 letters bevatten ('naam'@'domein'.nl)",
+							'domEmail'=>"'domein' gedeelte van uw e-mail moet minimaal 2 letters bevatten ('naam'@'domein'.nl)")
 				);
 $error = false;
 
@@ -109,8 +111,14 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 		$error = true;
 	}else{
 		$checkEmail = test_email($email);
-		if(!$checkEmail){
+		if($checkEmail=="ongeldig"){
 			$emailError = $errors['form']['ongEmail'];
+			$error = true;
+		}elseif($checkEmail=="naam"){
+			$emailError = $errors['form']['naamEmail'];
+			$error = true;
+		}elseif($checkEmail=="domein"){
+			$emailError = $errors['form']['Email'];
 			$error = true;
 		}
 	}
@@ -151,7 +159,7 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 		$geslachtEsc = mysqli_real_escape_string($connect, $geslacht);
 		$gebdatEsc = mysqli_real_escape_string($connect, $valgebDatum);
 		$emailEsc = mysqli_real_escape_string($connect, $email);
-		$sportonderdeelEsc = mysqli_real_escape_string($connect, $_POST['sportonderdeel']); 
+		$sportonderdeelEsc = mysqli_real_escape_string($connect, ucfirst($_POST['sportonderdeel'])); 
 		$lesdagEsc = mysqli_real_escape_string($connect, ucfirst($_POST['lesdag']));
 		$ingdatEsc = mysqli_real_escape_string($connect, $valIngDatum);
 		
@@ -178,7 +186,7 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 											'$valgebDatum',
 											'$geslachtEsc')";
 		
-		$ledenResult = mysqli_query($connect, $ledenQuery) or die("Er is iets mis gegeaan tijdens het invoeren van gegevens.");
+		$ledenResult = mysqli_query($connect, $ledenQuery) or die("Er is iets mis gegeaan tijdens het invoeren van gegevens. Check de database.");
 		
 		if(mysqli_affected_rows($connect) == 1){
 			//Informatie ophalen voor invoer lidmaatschap data
@@ -208,7 +216,7 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 					if(empty($tussenvoegsel)){
 						$volNaam = $naam . " " . $achternaam;
 					}else{
-						$volNaam = $naam . " " . $tussenvoegsel . " " . $achternaam;
+						$volNaam = $naam . " " . stripslashes($tussenvoegsel) . " " . $achternaam;
 					}
 					
 					$bevestiging = mail($email, "Registratie",
@@ -237,9 +245,11 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 				}else{
 					$registratiefout = mail($email, "Registratie-fout",
 					"U ontvangt dit e-mail, omdat er iets mis is gegaan tijdens\r\n
-					uw registratie op " . date("d-m-Y om H:i uur") . ".\r\n
+					uw registratie op " . date("d-m-Y \o\m H:i") . " uur.\r\n
 					Probeer het later nog eens.",
 					"Van: info@omnisport.com");
+					
+					$message="Er is iets fout gegaan tijdens uw registratie. Een bericht is naar uw e-mail verstuurd.";
 				}
 			}else{
 				$message = "Er is iets fout gegaan tijdens het registreren van gegevens in de ledentabel.";
