@@ -28,7 +28,9 @@ $errors = array('form'=>array('gNaam'=>"U heeft geen naam ingevuld.",
 							'ongHuisnr'=>"Geen geldig huisnummer",
 							'ongWoonplts'=>"Geen geldig woonplaats",
 							'ongDatum'=>"Datum format moet dd-mm-yyyy (23-01-2000) zijn.",
-							'toekDatum'=>"Datum ligt te ver in de toekomst")
+							'toekDatum'=>"Datum ligt te ver in de toekomst",
+							'naamEmail'=>"'naam' gedeelte van uw e-mail moet minimaal 2 letters bevatten ('naam'@'domein'.nl)",
+							'domEmail'=>"'domein' gedeelte van uw e-mail moet minimaal 2 letters bevatten ('naam'@'domein'.nl)")
 				);
 $error = false;
 
@@ -109,8 +111,14 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 		$error = true;
 	}else{
 		$checkEmail = test_email($email);
-		if(!$checkEmail){
+		if($checkEmail=="ongeldig"){
 			$emailError = $errors['form']['ongEmail'];
+			$error = true;
+		}elseif($checkEmail=="naam"){
+			$emailError = $errors['form']['naamEmail'];
+			$error = true;
+		}elseif($checkEmail=="domein"){
+			$emailError = $errors['form']['Email'];
 			$error = true;
 		}
 	}
