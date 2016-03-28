@@ -10,13 +10,16 @@ function test_email($email)
 		$explode_result_domain = explode(".", $explode_result[1]);
 		$name = $explode_result[0];
 		$domain =$explode_result_domain[0];
-		if(strlen($name) < 2 || strlen($domain) < 2){
-			return false;
+		
+		if(strlen($name) < 2){
+			return "naam";
+		}elseif( strlen($domain) < 2){
+			return "domein";
 		}else{
-			return true;
+			return "goed";
 		}
 	}else{
-		return false;
+		return "ongeldig";
 	}
 }
 
