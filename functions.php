@@ -81,6 +81,6 @@ function date_validation($inputdate){
 function error_msg($err_type, $err_msg, $err_file, $err_line){
 	echo"<div class = 'errorMsg'>
 			<b>Error:</b>
-			<p>Oops er is iets fout gegaan op deze pagina!</p>
+			<p>Oeps er is iets fout gegaan op deze pagina!</p>
 			</div>";
 }

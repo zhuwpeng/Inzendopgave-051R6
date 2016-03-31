@@ -32,6 +32,7 @@ $errors = array('form'=>array('gNaam'=>"U heeft geen naam ingevuld",
 							'naamEmail'=>"'naam' gedeelte van uw e-mail moet minimaal 2 letters bevatten ('naam'@'domein'.nl)",
 							'domEmail'=>"'domein' gedeelte van uw e-mail moet minimaal 2 letters bevatten ('naam'@'domein'.nl)")
 				);
+
 $error = false;
 
 //check of submit isset
@@ -279,7 +280,6 @@ if(isset($_POST['reset']) && $_POST['reset'] == "Reset"){
 <h1>Omnisportvereniging</h1>
 </header>
 <div id="container">
-	<div class="wrap">
 		<span><?php echo $message;?></span>
 		<span class=error><?php echo $errorMsg;?></span>
 		<div class="imgtext">
@@ -291,84 +291,83 @@ if(isset($_POST['reset']) && $_POST['reset'] == "Reset"){
 	    <div class="register-form">
 	        <h2>Aanmeld formulier</h2>
 	        <form method="POST" action="index.php">
-	
-	            <span class = error><?php echo $naamError;?></span>
-	            <label for="form-voornaam">*Naam:</label>
-	            <input type="text" id="form-voornaam" name="naam" value="<?php if($error){echo htmlentities($_POST['naam']);}else{ echo "";}?>">
-	
-	            <label for="form-tussenvoegsel">Tussenvoegsel:</label>
-	            <input type="text" id="form-tussenvoegsel" name="tussenvoegsel" value="<?php if($error){echo htmlentities($_POST['tussenvoegsel']);}else{ echo "";}?>">
-	
-	            <span class = error><?php echo $anaamError;?></span>
-	            <label for="form-achternaam">*Achternaam:</label>
-	            <input type="text" id="form-achternaam" name="achternaam" value="<?php if($error){echo htmlentities($_POST['achternaam']);}else{ echo "";}?>">
+				<div class="left-side">
+		            <span class = error><?php echo $naamError;?></span>
+		            <label for="form-voornaam">*Naam:</label>
+		            <input type="text" id="form-voornaam" name="naam" value="<?php if($error){echo htmlentities($_POST['naam']);}else{ echo "";}?>">
+		
+		            <label for="form-tussenvoegsel">Tussenvoegsel:</label>
+		            <input type="text" id="form-tussenvoegsel" name="tussenvoegsel" value="<?php if($error){echo htmlentities($_POST['tussenvoegsel']);}else{ echo "";}?>">
+		
+		            <span class = error><?php echo $anaamError;?></span>
+		            <label for="form-achternaam">*Achternaam:</label>
+		            <input type="text" id="form-achternaam" name="achternaam" value="<?php if($error){echo htmlentities($_POST['achternaam']);}else{ echo "";}?>">
+					
+					<span class = error><?php echo $gebdateError;?></span>
+		            <label for="form-gebdatum">Geboortedatum</label>
+		            <input type="text" id="form-gebdatum" name="gebdatum" value="<?php if($error){echo htmlentities($_POST['gebdatum']);}else{ echo "";}?>">
+					
+		            <div id = "straat-huisnr">
+		            <span class = error><?php echo $straatError;?></span>
+		            <span class = error><?php echo $huisnrError;?></span>
+		                    <div class = "straat">
+		                            <label for="form-straat">Straat:</label>
+		                            <input type="text" id="form-straat" name="straat" value="<?php if($error){echo htmlentities($_POST['straat']);}else{ echo "";}?>">
+		                    </div>
+		                    <div class = "huisnr">
+		                            <label for="form-huisnummer">nr.:</label>
+		                            <input type="text" id="form-huisnummer" name="huisnummer" value="<?php if($error){echo htmlentities($_POST['huisnummer']);}else{ echo "";}?>">
+		                    </div>
+		            </div>
+                    <span class = error><?php echo $postcodeError;?></span>
+                    <label for="form-postcode">Postcode:</label>
+                    <input type="text" id="form-postcode" name="postcode" value="<?php if($error){echo htmlentities($_POST['postcode']);}else{ echo "";}?>">
+				</div>
 				
-				<span class = error><?php echo $gebdateError;?></span>
-	            <label for="form-gebdatum">Geboortedatum</label>
-	            <input type="text" id="form-gebdatum" name="gebdatum" value="<?php if($error){echo htmlentities($_POST['gebdatum']);}else{ echo "";}?>">
+				<div class="right-side">
+		            <span class = error><?php echo $woonpltsError;?></span>
+		            <label for="form-woonplaats">Woonplaats:</label>
+		            <input type="text" id="form-woonplaats" name="woonplaats" value="<?php if($error){echo htmlentities($_POST['woonplaats']);}else{ echo "";}?>">
+		
+		            <span class = error><?php echo $emailError;?></span>
+		            <label for="form-email">*E-mail:</label>
+		            <input type="text" id="form-email" name="email" value="<?php if($error){echo htmlentities($_POST['email']);}else{ echo "";}?>">
+		
+		            <span class = error><?php echo $ingdateError;?></span>
+		            <label for="form-ingdatum">*Ingangsdatum</label>
+		            <input type="text" id="form-ingdatum" name="ingdatum" value="<?php if($error){echo htmlentities($_POST['ingdatum']);}else{ echo "";}?>">
+		
+		            <div class="geslacht">
+		                    <label class="geslacht-title">Geslacht</label><span class = error><?php echo $geslachtError;?></span>
+		                    <input type="radio" id="form-man" name="geslacht" value="m"><label for="form-man">Man</label>
+		                    <input type="radio" id="form-vrouw" name="geslacht" value="v"><label for="form-vrouw">Vrouw</label>
+		            </div>
+		
+		            <label for="form-sport">*Sportonderdeel</label>
+		            <select name="sportonderdeel" id="form-sport">
+		                    <option value="tennis">Tennis</option>
+		                    <option value="voetbal">Voetbal</option>
+		                    <option value="tafeltennis">Tafeltennis</option>
+		                    <option value="Biljart">Biljart</option>
+		            </select>
+		
+		            <label for="form-dag">Lesdag</label>
+		            <select name="lesdag" id="form-dag">
+		                    <option value="maandag">Maandag</option>
+		                    <option value="dinsdag">Dinsdag</option>
+		                    <option value="woensdag">Woensdag</option>
+		                    <option value="donderdag">Donderdag</option>
+		                    <option value="vrijdag">Vrijdag</option>
+		            </select>
+				</div>
 				
-	            <div id = "straat-huisnr">
-	            <span class = error><?php echo $straatError;?></span>
-	            <span class = error><?php echo $huisnrError;?></span>
-	                    <div class = "straat">
-	                            <label for="form-straat">Straat:</label>
-	                            <input type="text" id="form-straat" name="straat" value="<?php if($error){echo htmlentities($_POST['straat']);}else{ echo "";}?>">
-	                    </div>
-	                    <div class = "huisnr">
-	                            <label for="form-huisnummer">nr.:</label>
-	                            <input type="text" id="form-huisnummer" name="huisnummer" value="<?php if($error){echo htmlentities($_POST['huisnummer']);}else{ echo "";}?>">
-	                    </div>
-	            </div>
-	            <div id="postcode">
-	                    <span class = error><?php echo $postcodeError;?></span>
-	                    <label for="form-postcode">Postcode:</label>
-	                    <input type="text" id="form-postcode" name="postcode" value="<?php if($error){echo htmlentities($_POST['postcode']);}else{ echo "";}?>">
-	            </div>
-	
-	            <span class = error><?php echo $woonpltsError;?></span>
-	            <label for="form-woonplaats">Woonplaats:</label>
-	            <input type="text" id="form-woonplaats" name="woonplaats" value="<?php if($error){echo htmlentities($_POST['woonplaats']);}else{ echo "";}?>">
-	
-	            <span class = error><?php echo $emailError;?></span>
-	            <label for="form-email">*E-mail:</label>
-	            <input type="text" id="form-email" name="email" value="<?php if($error){echo htmlentities($_POST['email']);}else{ echo "";}?>">
-	
-	            <span class = error><?php echo $ingdateError;?></span>
-	            <label for="form-ingdatum">*Ingangsdatum</label>
-	            <input type="text" id="form-ingdatum" name="ingdatum" value="<?php if($error){echo htmlentities($_POST['ingdatum']);}else{ echo "";}?>">
-	
-	            <div class="geslacht">
-	                    <label id = "1">Geslacht</label><span class = error><?php echo $geslachtError;?></span>
-	                    <input type="radio" id="form-man" name="geslacht" value="m"><label for="form-man">Man</label>
-	                    <input type="radio" id="form-vrouw" name="geslacht" value="v"><label for="form-vrouw">Vrouw</label>
-	            </div>
-	
-	            <label for="form-sport">*Sportonderdeel</label>
-	            <select name="sportonderdeel" id="form-sport">
-	                    <option value="tennis">Tennis</option>
-	                    <option value="voetbal">Voetbal</option>
-	                    <option value="tafeltennis">Tafeltennis</option>
-	                    <option value="Biljart">Biljart</option>
-	            </select>
-	
-	            <label for="form-dag">Lesdag</label>
-	            <select name="lesdag" id="form-dag">
-	                    <option value="maandag">Maandag</option>
-	                    <option value="dinsdag">Dinsdag</option>
-	                    <option value="woensdag">Woensdag</option>
-	                    <option value="donderdag">Donderdag</option>
-	                    <option value="vrijdag">Vrijdag</option>
-	            </select>
-	
 	            <p>(*)Verplichte velden.</p>
-	
-	            <div id="submit_reset">
+				
+	            <div class="submit_reset">
 	                    <input class="btn" type="submit" name="submit" value="Verstuur">
 	                    <input class="btn" type="submit" name="reset" value="Reset">
 	            </div>
-	
 	        </form>
-	    </div>
     </div>
 </div><!--end #container -->
 </body>

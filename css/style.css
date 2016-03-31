@@ -24,7 +24,8 @@ header{
 
 
 #container{
-	width: 960px;
+	max-width: 960px;
+	min-width: 480px;
 	padding: 0px;
 	margin: 0px auto;
 	text-align:center;
@@ -33,73 +34,82 @@ header{
 	overflow: hidden;
 }
 
-#container p{
-	display: block;
-	text-align: center;
-}
-
-
-#container .loginout p{
-	display: block;
-	text-align: left;
-}
-
 #container div.wrap{
 	width:70%;
 	margin-top: 20px;
 	margin-left: auto;
 	margin-right: auto;
-	border: solid 1px black;
 }
 
 div.imgtext{
 	width:45%;
 	padding: 10px;
-	float: left;
-	border: solid 1px black;
-	margin-right: 20px;
+	margin: 0 auto;
+	margin-top: 20px;
+	clear: both;
 }
 
 div.imgtext img{
 	width:75%;
 	height:75%;
-	border: solid 1px #ececec;
 }
 
 #container div.imgtext p{
 	text-align: left;
 }
+
 .register-form{
-	float: left;
-	width: 45%;
-	text-align:left;
-	padding: 10px;
+	text-align: center;
+	padding: 1%;
 	background: #eee;
 	border: solid 1px #acacac;
+	margin: 1%;
+	width: 96%;
 }
 
-#container .register-form p{
-	text-align:left;
-}
-
-div#straat-huisnr{
-	display: inline-block;
-}
-
-.huisnr{
-	float: left;
-	width: 25%;
-}
-
-.straat{
-	float: left;
-	width: 65%;
-}
-
-
-label{
+.register-form label{
 	display: block;
 	margin: 0 0 5px;
+	text-align: left;
+}
+	
+.register-form p{
+	text-align: center;
+	clear: both;
+}
+
+.left-side,
+.right-side {
+	float: left;
+	display: inline-block;
+	margin: 0 2.5%;
+	margin-bottom: 10px;
+	width: 45%
+}
+
+.register-form .submit_reset{
+	margin: 10px auto;
+	text-align: center;
+}
+
+.straat-huisnr{
+	display: block;
+}
+
+.huisnr,
+.straat {
+	float: left;
+	display: inline-block;
+	margin-right: 3%;
+}
+
+.huisnr {
+	width: 25%;
+	margin-right: 0;
+}
+
+.straat {
+	width: 72%
 }
 
 select,
@@ -107,33 +117,30 @@ input[type="password"],
 input[type="number"],
 input[type="text"],
 input[type="date"]{
-	display:block;
+	display: block;
 	margin: 0 0 10px;
-	width:90%;
+	width: 100%;
+}
+
+select {
+	margin-bottom: 12px;
 }
 
 .geslacht {
-	display:block;
-	margin: 0 0 10px;
+	display: block;
+	margin-bottom: 15px;
+	text-align: left;
 }
 
-.geslacht #1{
-	display:block;
-}
-
-.geslacht label{
+.register-form .right-side .geslacht label{
 	display: inline;
+	text-align: left;
 }
 
 span{
 	display:block;
 	margin: 5px 0px;
 	text-align: center;
-}
-
-div#submit_reset{
-	margin: 20px auto;
-	width: 60%;
 }
 
 .btn{
