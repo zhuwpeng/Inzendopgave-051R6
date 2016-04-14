@@ -1,5 +1,5 @@
 <?php
-//Check if correct format email
+//Check of email format klopt
 function test_email($email)
 {
 	$match_pattern = '/^[a-z]*[A-Z]*@[a-z]*[A-Z]*.nl$/';
@@ -23,6 +23,7 @@ function test_email($email)
 	}
 }
 
+//Check of postcode klopt
 function test_postcode($postcode)
 {
 	$match_pattern = '/^(\d\d\d\d)[a-zA-Z][a-zA-Z]$/';
@@ -33,6 +34,7 @@ function test_postcode($postcode)
 	}
 }
 
+//Check of huisnummer klopt
 function test_huisnr($huisnr)
 {
 	$match_pattern = '/^[1-9][0-9]+[a-z]*$/';
@@ -43,6 +45,7 @@ function test_huisnr($huisnr)
 	}
 }
 
+//Check of woonplaats alleen letter bevat
 function test_woonplaats($woonplaats)
 {
 	$match_pattern = '/^[a-zA-Z]+$/';
@@ -53,7 +56,7 @@ function test_woonplaats($woonplaats)
 	}
 }
 
-
+//Check of datum klopt
 function date_validation($inputdate){
 	$matches="";
 
@@ -76,10 +79,30 @@ function date_validation($inputdate){
 	}
 }
 
-
+//Eigen error handler
 function error_msg($err_type, $err_msg, $err_file, $err_line){
 	echo"<div class = 'errorMsg'>
 			<b>Error:</b>
 			<p>Oeps er is iets fout gegaan op deze pagina!</p>
 			</div>";
+}
+
+//Vult de html select optie
+function create_select_option($options, $selectName, $selectId) {
+	
+	
+	
+	if(is_array($options)) {
+		echo '<select name="'. $selectName . '" id="' . $selectId . '">';
+		foreach($options as $option) {
+			echo '<option value="' . strtolower($option) . '">' . ucfirst(strtolower($option)) . '</option>';
+		}
+		echo '<select>';
+	} else {
+		echo '<select name="'. $selectName . '" id="' . $selectId . '">';
+			echo '<option value="' . strtolower($options) . '">' . ucfirst(strtolower($options)) . '</option>';
+		echo '<select>';
+	}
+	
+	
 }

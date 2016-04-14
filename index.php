@@ -340,26 +340,41 @@ if(isset($_POST['reset']) && $_POST['reset'] == "Reset"){
 		
 		            <div class="geslacht">
 		                    <label class="geslacht-title">Geslacht</label><span class = error><?php echo $geslachtError;?></span>
-		                    <input type="radio" id="form-man" name="geslacht" value="m"><label for="form-man">Man</label>
-		                    <input type="radio" id="form-vrouw" name="geslacht" value="v"><label for="form-vrouw">Vrouw</label>
+		                    <input type="radio" id="form-man" name="geslacht" <?php if(isset($_POST['geslacht']) && $_POST['geslacht']=='m'){ echo ' checked="checked" ';}?> value="m"><label for="form-man">Man</label>
+		                    <input type="radio" id="form-vrouw" name="geslacht" <?php if(isset($_POST['geslacht']) && $_POST['geslacht']=='v'){ echo ' checked="checked" ';}?> value="v"><label for="form-vrouw">Vrouw</label>
 		            </div>
 		
 		            <label for="form-sport">*Sportonderdeel</label>
-		            <select name="sportonderdeel" id="form-sport">
-		                    <option value="tennis">Tennis</option>
-		                    <option value="voetbal">Voetbal</option>
-		                    <option value="tafeltennis">Tafeltennis</option>
-		                    <option value="Biljart">Biljart</option>
-		            </select>
+<!-- 		            <select name="sportonderdeel" id="form-sport"> -->
+<!-- 		                    <option value="tennis">Tennis</option> -->
+<!-- 		                    <option value="voetbal">Voetbal</option> -->
+<!-- 		                    <option value="tafeltennis">Tafeltennis</option> -->
+<!-- 		                    <option value="Biljart">Biljart</option> -->
+<!-- 		            </select> -->
+						<?php 
+						$sports = array('tennis', 'voetbal', 'tafeltennis', 'biljart');
+						$sportSelectName = 'sportonderdeel';
+						$sportSelectId = 'form-sport';
+						
+						create_select_option($sports, $sportSelectName, $sportSelectId);
+						?>
 		
 		            <label for="form-dag">Lesdag</label>
-		            <select name="lesdag" id="form-dag">
-		                    <option value="maandag">Maandag</option>
-		                    <option value="dinsdag">Dinsdag</option>
-		                    <option value="woensdag">Woensdag</option>
-		                    <option value="donderdag">Donderdag</option>
-		                    <option value="vrijdag">Vrijdag</option>
-		            </select>
+<!-- 		            <select name="lesdag" id="form-dag"> -->
+<!-- 		                    <option value="maandag">Maandag</option> -->
+<!-- 		                    <option value="dinsdag">Dinsdag</option> -->
+<!-- 		                    <option value="woensdag">Woensdag</option> -->
+<!-- 		                    <option value="donderdag">Donderdag</option> -->
+<!-- 		                    <option value="vrijdag">Vrijdag</option> -->
+<!-- 		            </select> -->
+						<?php 
+						$dagen = array('maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag');
+						$dagenSelectName = 'lesdag';
+						$dagenSelectId = 'form-dag';
+						
+						create_select_option($dagen, $dagenSelectName, $dagenSelectId);
+						?>
+						
 				</div>
 				
 	            <p>(*)Verplichte velden.</p>
