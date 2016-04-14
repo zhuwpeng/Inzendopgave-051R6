@@ -87,22 +87,17 @@ function error_msg($err_type, $err_msg, $err_file, $err_line){
 			</div>";
 }
 
-//Vult de html select optie
+/**
+ * @desc: Maakt een select optiebox
+ * @param: array['waardes'], naam, id
+ * @returns: html optie veld
+ */
 function create_select_option($options, $selectName, $selectId) {
-	
-	
-	
 	if(is_array($options)) {
 		echo '<select name="'. $selectName . '" id="' . $selectId . '">';
 		foreach($options as $option) {
-			echo '<option value="' . strtolower($option) . '">' . ucfirst(strtolower($option)) . '</option>';
+			echo '<option value="' . strtolower($option) . '" ' . ($_POST[$selectName] == strtolower($option) ?' selected = "selected"':'' ) . '>' . ucfirst(strtolower($option)) . '</option>';
 		}
 		echo '<select>';
-	} else {
-		echo '<select name="'. $selectName . '" id="' . $selectId . '">';
-			echo '<option value="' . strtolower($options) . '">' . ucfirst(strtolower($options)) . '</option>';
-		echo '<select>';
 	}
-	
-	
 }
