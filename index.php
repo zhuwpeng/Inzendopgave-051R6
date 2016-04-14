@@ -1,6 +1,6 @@
 <?php
-include "db_connect.php";
-include "functions.php";
+include "inc/db_connect.php";
+include "inc/functions.php";
 //set_error_handler("error_msg");
 
 $naamError = "";
@@ -283,10 +283,10 @@ if(isset($_POST['reset']) && $_POST['reset'] == "Reset"){
 		<span><?php echo $message;?></span>
 		<span class=error><?php echo $errorMsg;?></span>
 		<div class="imgtext">
-		    <img alt="sport" src="images/sports.jpg">
+		    <img alt="sport" src="img/sports.jpg">
 		    <p>Welkom bij Omnisportvereniging! Wilt u mee doen
 		    aan een van onze sporten? Registreer dan via onze registratie formulier 
-		    hiernaast.</p>
+		    hieronder.</p>
 		</div>
 	    <div class="register-form">
 	        <h2>Aanmeld formulier</h2>
@@ -308,8 +308,8 @@ if(isset($_POST['reset']) && $_POST['reset'] == "Reset"){
 		            <input type="text" id="form-gebdatum" name="gebdatum" value="<?php if($error){echo htmlentities($_POST['gebdatum']);}else{ echo "";}?>">
 					
 		            <div id = "straat-huisnr">
-		            <span class = error><?php echo $straatError;?></span>
-		            <span class = error><?php echo $huisnrError;?></span>
+				            <span class = error><?php echo $straatError;?></span>
+				            <span class = error><?php echo $huisnrError;?></span>
 		                    <div class = "straat">
 		                            <label for="form-straat">Straat:</label>
 		                            <input type="text" id="form-straat" name="straat" value="<?php if($error){echo htmlentities($_POST['straat']);}else{ echo "";}?>">
@@ -319,6 +319,7 @@ if(isset($_POST['reset']) && $_POST['reset'] == "Reset"){
 		                            <input type="text" id="form-huisnummer" name="huisnummer" value="<?php if($error){echo htmlentities($_POST['huisnummer']);}else{ echo "";}?>">
 		                    </div>
 		            </div>
+		            
                     <span class = error><?php echo $postcodeError;?></span>
                     <label for="form-postcode">Postcode:</label>
                     <input type="text" id="form-postcode" name="postcode" value="<?php if($error){echo htmlentities($_POST['postcode']);}else{ echo "";}?>">
