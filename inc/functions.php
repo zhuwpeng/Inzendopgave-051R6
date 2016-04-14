@@ -63,7 +63,6 @@ function date_validation($inputdate){
 		$inputdate = explode("-", $inputdate);
 	}else{
 		return false;
-		exit();
 	}
 
 	if(checkdate($inputdate[1],$inputdate[0], $inputdate[2])){
