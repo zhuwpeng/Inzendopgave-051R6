@@ -156,3 +156,11 @@ span{
 	color:red;
 	margin: 5px 0px;
 }
+
+.errorMsg {
+	background-color: red;
+	width: 50%;
+	position: absolute;
+	top: 100px;
+	left: 50%;
+}

@@ -89,9 +89,7 @@ function error_msg($err_type, $err_msg, $err_file, $err_line){
 
 //Vult de html select optie
 function create_select_option($options, $selectName, $selectId) {
-	
-	
-	
+
 	if(is_array($options)) {
 		echo '<select name="'. $selectName . '" id="' . $selectId . '">';
 		foreach($options as $option) {
