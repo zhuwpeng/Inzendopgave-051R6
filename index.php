@@ -1,7 +1,7 @@
 <?php
 include "inc/db_connect.php";
 include "inc/functions.php";
-//set_error_handler("error_msg");
+set_error_handler("error_msg");
 
 $naamError = "";
 $anaamError = "";
@@ -187,17 +187,11 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 											'$valgebDatum',
 											'$geslachtEsc')";
 		
+		//Retrieve latest person id
 		$ledenResult = mysqli_query($connect, $ledenQuery) or die("Er is iets mis gegeaan tijdens het invoeren van gegevens. Check de database.");
-		
-		if(mysqli_affected_rows($connect) == 1){
-			//Informatie ophalen voor invoer lidmaatschap data
-			$idQuery = "SELECT ID FROM leden WHERE Voornaam = '$naamEsc'";
-			$idResult = mysqli_query($connect, $idQuery) or die("Kan gegevens niet ophalen uit database");
+		$ledenId = mysqli_insert_id($connect);
 			
-			if(mysqli_num_rows($idResult) > 0){
-				$idData = mysqli_fetch_assoc($idResult);
-				$ledenId = $idData['ID'];
-				
+			if($ledenId != NULL || $ledenId > 0){
 				$lidmaatschapQuery = "INSERT INTO lidmaatschap (ID, 
 																LedenID,
 																Datumingang,
@@ -220,28 +214,37 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 						$volNaam = $naam . " " . stripslashes($tussenvoegsel) . " " . $achternaam;
 					}
 					
-					$bevestiging = mail($email, "Registratie",
-					"Welkom bij Omnisport vereniging!\r\n
-					Dit is een bevestigings e-mail van uw registratie.\r\n
-					Hieronder nog het de registratie data:\r\n
-					Naam: ". $volNaam . "\r\n
-					Lidnummer:". $ledenId ."\r\n
-					Sport: " . $sportonderdeelEsc . "\r\n
-					Lesdag: " . $lesdagEsc .".\r\n
-					Ingangsdatum: " . $ingDatum ."\r\n
-					Heel erg bedankt voor uw registratie en tot dan!",
-					"Van: info@omnisport.com");
 					
-					$administratie = mail("admin@hotmail.com", "Nieuwe lid",
-					"De volgende gebruiker heeft zich geregistreerd bij Omnisport:\r\n
-					Naam: ". $volNaam . "\r\n
-					Lidnummer:". $ledenId ."\r\n
-					Sport: " . $sportonderdeelEsc . "\r\n
-					Lesdag: " . $lesdagEsc .".\r\n
-					Ingangsdatum: " . $ingDatum ."\r\n",
-					"Van: info@omnisport.com");
+						$bevestiging = mail($email, "Registratie",
+								"Welkom bij Omnisport vereniging!\r\n
+								Dit is een bevestigings e-mail van uw registratie.\r\n
+								Hieronder nog de registratie data:\r\n
+								Naam: ". $volNaam . "\r\n
+								Lidnummer:". $ledenId ."\r\n
+								Sport: " . $sportonderdeelEsc . "\r\n
+								Lesdag: " . $lesdagEsc .".\r\n
+								Ingangsdatum: " . $ingDatum ."\r\n
+								Heel erg bedankt voor uw registratie en tot dan!",
+								"Van: info@omnisport.com");
+							
+						$administratie = mail("admin@hotmail.com", "Nieuwe lid",
+								"De volgende gebruiker heeft zich geregistreerd bij Omnisport:\r\n
+								Naam: ". $volNaam . "\r\n
+								Lidnummer:". $ledenId ."\r\n
+								Sport: " . $sportonderdeelEsc . "\r\n
+								Lesdag: " . $lesdagEsc .".\r\n
+								Ingangsdatum: " . $ingDatum ."\r\n",
+								"Van: info@omnisport.com");
+							
+						
 					
-					$message="Uw registratie is met success ontvangen. U ontvangt binnenkort een e-mail met bevestiging.";
+					//voeg controle toe of mail verstuurd is
+					if(!$bevestiging || !$administratie) {
+						$message="Er is iets fout gegaan tijdens uw registratie. Een bericht is naar uw e-mail verstuurd.";
+						error_log(error_get_last(),3, "error_log.txt" );
+					}else {
+						$message="Uw registratie is met success ontvangen. U ontvangt binnenkort een e-mail met bevestiging.";
+					}
 					
 				}else{
 					$registratiefout = mail($email, "Registratie-fout",
@@ -255,17 +258,11 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 			}else{
 				$message = "Er is iets fout gegaan tijdens het registreren van gegevens in de ledentabel.";
 			}
-			
-		}else{
-			echo "Er is iets fout gegaan tijdens het registreren van gegevens in de ledentabel.";
-			error_log(mysqli_error($connect),3,"error_log.txt");
-		
-		}
 	}
 }
 
 if(isset($_POST['reset']) && $_POST['reset'] == "Reset"){
-	reset($_POST);
+	unset($_POST);
 }
 
 ?>
@@ -345,12 +342,6 @@ if(isset($_POST['reset']) && $_POST['reset'] == "Reset"){
 		            </div>
 		
 		            <label for="form-sport">*Sportonderdeel</label>
-<!-- 		            <select name="sportonderdeel" id="form-sport"> -->
-<!-- 		                    <option value="tennis">Tennis</option> -->
-<!-- 		                    <option value="voetbal">Voetbal</option> -->
-<!-- 		                    <option value="tafeltennis">Tafeltennis</option> -->
-<!-- 		                    <option value="Biljart">Biljart</option> -->
-<!-- 		            </select> -->
 						<?php 
 						$sports = array('tennis', 'voetbal', 'tafeltennis', 'biljart');
 						$sportSelectName = 'sportonderdeel';
@@ -360,13 +351,6 @@ if(isset($_POST['reset']) && $_POST['reset'] == "Reset"){
 						?>
 		
 		            <label for="form-dag">Lesdag</label>
-<!-- 		            <select name="lesdag" id="form-dag"> -->
-<!-- 		                    <option value="maandag">Maandag</option> -->
-<!-- 		                    <option value="dinsdag">Dinsdag</option> -->
-<!-- 		                    <option value="woensdag">Woensdag</option> -->
-<!-- 		                    <option value="donderdag">Donderdag</option> -->
-<!-- 		                    <option value="vrijdag">Vrijdag</option> -->
-<!-- 		            </select> -->
 						<?php 
 						$dagen = array('maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag');
 						$dagenSelectName = 'lesdag';

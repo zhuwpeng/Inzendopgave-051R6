@@ -89,18 +89,16 @@ function error_msg($err_type, $err_msg, $err_file, $err_line){
 
 //Vult de html select optie
 function create_select_option($options, $selectName, $selectId) {
-	
-	
-	
+
 	if(is_array($options)) {
 		echo '<select name="'. $selectName . '" id="' . $selectId . '">';
 		foreach($options as $option) {
-			echo '<option value="' . strtolower($option) . '">' . ucfirst(strtolower($option)) . '</option>';
+			echo '<option value="' . strtolower($option) . '" ' . (isset($_POST[$selectName])?$_POST[$selectName] == strtolower($option) ?' selected = "selected"':'':'') . '>' . ucfirst(strtolower($option)) . '</option>';
 		}
 		echo '<select>';
 	} else {
 		echo '<select name="'. $selectName . '" id="' . $selectId . '">';
-			echo '<option value="' . strtolower($options) . '">' . ucfirst(strtolower($options)) . '</option>';
+			echo '<option value="' . strtolower($option) . '" ' . (isset($_POST[$selectName])?$_POST[$selectName] == strtolower($option) ?' selected = "selected"':'':'') . '>' . ucfirst(strtolower($option)) . '</option>';
 		echo '<select>';
 	}
 	
