@@ -50,8 +50,8 @@ div.imgtext{
 }
 
 div.imgtext img{
+	display: block;
 	width:75%;
-	height:75%;
 }
 
 #container div.imgtext p{
@@ -137,6 +137,10 @@ select {
 	text-align: left;
 }
 
+.error {
+	text-align: left;
+}
+
 span{
 	display:block;
 	margin: 5px 0px;
@@ -155,4 +159,13 @@ span{
 	display:block;
 	color:red;
 	margin: 5px 0px;
+}
+
+.errorMsg {
+	background-color: white;
+	position: absolute;
+	width: 100%;
+	top: 72px;
+	left: 0;
+	text-align: center;
 }
