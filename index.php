@@ -241,13 +241,9 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 					//voeg controle toe of mail verstuurd is
 					if(!$bevestiging || !$administratie) {
 						$message="Er is iets fout gegaan tijdens uw registratie. Een bericht is naar uw e-mail verstuurd.";
-<<<<<<< HEAD
 						error_log(error_get_last(),3, "error_log.txt");
 					} else {
-=======
-						error_log(error_get_last(),3, "error_log.txt" );
-					}else {
->>>>>>> origin/verbeteringen
+
 						$message="Uw registratie is met success ontvangen. U ontvangt binnenkort een e-mail met bevestiging.";
 					}
 					

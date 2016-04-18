@@ -92,31 +92,15 @@ function error_msg($err_type, $err_msg, $err_file, $err_line){
  * @returns: html optie veld
  */
 function create_select_option($options, $selectName, $selectId) {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> origin/verbeteringen
-
 	if(is_array($options)) {
 		echo '<select name="'. $selectName . '" id="' . $selectId . '">';
 		foreach($options as $option) {
 			echo '<option value="' . strtolower($option) . '" ' . (isset($_POST[$selectName])?$_POST[$selectName] == strtolower($option) ?' selected = "selected"':'':'') . '>' . ucfirst(strtolower($option)) . '</option>';
 		}
-		echo '<select>';
 	} else {
 		echo '<select name="'. $selectName . '" id="' . $selectId . '">';
 			echo '<option value="' . strtolower($option) . '" ' . (isset($_POST[$selectName])?$_POST[$selectName] == strtolower($option) ?' selected = "selected"':'':'') . '>' . ucfirst(strtolower($option)) . '</option>';
-<<<<<<< HEAD
-=======
-		echo '<select>';
-=======
-	if(is_array($options)) {
-		echo '<select name="'. $selectName . '" id="' . $selectId . '">';
-		foreach($options as $option) {
-			echo '<option value="' . strtolower($option) . '" ' . ($_POST[$selectName] == strtolower($option) ?' selected = "selected"':'' ) . '>' . ucfirst(strtolower($option)) . '</option>';
-		}
->>>>>>> origin/verbeteringen
-		echo '<select>';
->>>>>>> origin/verbeteringen
 	}
+	echo '<select>';
+
 }
