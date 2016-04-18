@@ -162,10 +162,18 @@ span{
 }
 
 .errorMsg {
+<<<<<<< HEAD
 	background-color: white;
 	position: absolute;
 	width: 100%;
 	top: 72px;
 	left: 0;
 	text-align: center;
+=======
+	background-color: red;
+	width: 50%;
+	position: absolute;
+	top: 100px;
+	left: 50%;
+>>>>>>> origin/verbeteringen
 }
