@@ -82,25 +82,25 @@ function date_validation($inputdate){
 //Eigen error handler
 function error_msg($err_type, $err_msg, $err_file, $err_line){
 	echo"<div class = 'errorMsg'>
-			<b>Error:</b>
-			<p>Oeps er is iets fout gegaan op deze pagina!</p>
-			</div>";
+			<p><b>Error:</b> Oeps er is iets fout gegaan op deze pagina! Probeer later nog eens aan te melden.<p>
+		</div>";
 }
 
-//Vult de html select optie
+/**
+ * @desc: Maakt een select optiebox
+ * @param: array['waardes'], naam, id
+ * @returns: html optie veld
+ */
 function create_select_option($options, $selectName, $selectId) {
-
 	if(is_array($options)) {
 		echo '<select name="'. $selectName . '" id="' . $selectId . '">';
 		foreach($options as $option) {
-			echo '<option value="' . strtolower($option) . '">' . ucfirst(strtolower($option)) . '</option>';
+			echo '<option value="' . strtolower($option) . '" ' . (isset($_POST[$selectName])?$_POST[$selectName] == strtolower($option) ?' selected = "selected"':'':'') . '>' . ucfirst(strtolower($option)) . '</option>';
 		}
-		echo '<select>';
 	} else {
 		echo '<select name="'. $selectName . '" id="' . $selectId . '">';
-			echo '<option value="' . strtolower($options) . '">' . ucfirst(strtolower($options)) . '</option>';
-		echo '<select>';
+			echo '<option value="' . strtolower($option) . '" ' . (isset($_POST[$selectName])?$_POST[$selectName] == strtolower($option) ?' selected = "selected"':'':'') . '>' . ucfirst(strtolower($option)) . '</option>';
 	}
-	
-	
+	echo '<select>';
+
 }

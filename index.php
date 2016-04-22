@@ -187,19 +187,11 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 											'$valgebDatum',
 											'$geslachtEsc')";
 		
-		$ledenResult = mysqli_query($connect, $ledenQuery) or die("Er is iets mis gegeaan tijdens het invoeren van gegevens. Check de database.");
+		//Retrieve latest person id
+		$ledenResult = mysqli_query($connect, $ledenQuery) or die("Er is iets mis gegeaan tijdens het invoeren van gegevens. Check of de database is aangemaakt en de tabel velden.");
 		$ledenId = mysqli_insert_id($connect);
-		
-		
-// 		if(mysqli_affected_rows($connect) == 1){
-			//Informatie ophalen voor invoer lidmaatschap data
-// 			$idQuery = "SELECT ID FROM leden WHERE Voornaam = '$naamEsc'";
-// 			$idResult = mysqli_query($connect, $idQuery) or die("Kan gegevens niet ophalen uit database");
 			
 			if($ledenId != NULL || $ledenId > 0){
-// 				$idData = mysqli_fetch_assoc($idResult);
-// 				$ledenId = $idData['ID'];
-				
 				$lidmaatschapQuery = "INSERT INTO lidmaatschap (ID, 
 																LedenID,
 																Datumingang,
@@ -223,7 +215,6 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 					}
 					
 					
-					try {
 						$bevestiging = mail($email, "Registratie",
 								"Welkom bij Omnisport vereniging!\r\n
 								Dit is een bevestigings e-mail van uw registratie.\r\n
@@ -245,14 +236,16 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 								Ingangsdatum: " . $ingDatum ."\r\n",
 								"Van: info@omnisport.com");
 							
-						$message="Uw registratie is met success ontvangen. U ontvangt binnenkort een e-mail met bevestiging.";
-							
-					} catch (Exception $e) {
-						error_msg("","");
-					}
+						
 					
 					//voeg controle toe of mail verstuurd is
-					
+					if(!$bevestiging || !$administratie) {
+						$message="Er is iets fout gegaan tijdens uw registratie. Een bericht is naar uw e-mail verstuurd.";
+						error_log(error_get_last(),3, "error_log.txt");
+					} else {
+
+						$message="Uw registratie is met success ontvangen. U ontvangt binnenkort een e-mail met bevestiging.";
+					}
 					
 				}else{
 					$registratiefout = mail($email, "Registratie-fout",
@@ -266,17 +259,11 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 			}else{
 				$message = "Er is iets fout gegaan tijdens het registreren van gegevens in de ledentabel.";
 			}
-			
-// 		}else{
-// 			echo "Er is iets fout gegaan tijdens het registreren van gegevens in de ledentabel.";
-// 			error_log(mysqli_error($connect),3,"error_log.txt");
-		
-// 		}
 	}
 }
 
 if(isset($_POST['reset']) && $_POST['reset'] == "Reset"){
-	reset($_POST);
+	unset($_POST);
 }
 
 ?>
@@ -356,12 +343,6 @@ if(isset($_POST['reset']) && $_POST['reset'] == "Reset"){
 		            </div>
 		
 		            <label for="form-sport">*Sportonderdeel</label>
-<!-- 		            <select name="sportonderdeel" id="form-sport"> -->
-<!-- 		                    <option value="tennis">Tennis</option> -->
-<!-- 		                    <option value="voetbal">Voetbal</option> -->
-<!-- 		                    <option value="tafeltennis">Tafeltennis</option> -->
-<!-- 		                    <option value="Biljart">Biljart</option> -->
-<!-- 		            </select> -->
 						<?php 
 						$sports = array('tennis', 'voetbal', 'tafeltennis', 'biljart');
 						$sportSelectName = 'sportonderdeel';
@@ -371,13 +352,6 @@ if(isset($_POST['reset']) && $_POST['reset'] == "Reset"){
 						?>
 		
 		            <label for="form-dag">Lesdag</label>
-<!-- 		            <select name="lesdag" id="form-dag"> -->
-<!-- 		                    <option value="maandag">Maandag</option> -->
-<!-- 		                    <option value="dinsdag">Dinsdag</option> -->
-<!-- 		                    <option value="woensdag">Woensdag</option> -->
-<!-- 		                    <option value="donderdag">Donderdag</option> -->
-<!-- 		                    <option value="vrijdag">Vrijdag</option> -->
-<!-- 		            </select> -->
 						<?php 
 						$dagen = array('maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag');
 						$dagenSelectName = 'lesdag';
