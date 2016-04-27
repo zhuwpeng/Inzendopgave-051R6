@@ -8,6 +8,7 @@ $anaamError = "";
 $straatError = "";
 $postcodeError = "";
 $huisnrError = "";
+$toevgingError = "";
 $woonpltsError = "";
 $emailError = "";
 $ingdateError = "";
@@ -18,19 +19,18 @@ $message = "";
 $errorMsg = "";
 $errors = array('form'=>array('gNaam'=>"U heeft geen naam ingevuld",
 							'gAnaam'=>"U heeft geen achternaam ingevuld",
-							'gStraat'=>"U heeft geen straat ingevuld",
 							'gHuisnr'=>"U heeft geen huisnummer ingevuld",
 							'gEmail'=>"U heeft geen e-mail ingevuld",
 							'gDatum'=>"U heeft geen datum opgegeven",
 							'gGeslacht'=>"Kies een geslacht",
-							'ongEmail'=>"Geen geldig e-mail adress. E-mail moet eindigen op '.nl'",
+							'ongStraat'=>"Straatnaam mag alleen bestaan uit letters",
+							'ongEmail'=>"E-mail moet 2 op de volgende manier '2 letters'@'2 letters' en eindigen op '.nl'(vb. ab@cd.nl)",
 							'ongPostcode'=>"Postcode moet bestaan uit 4 cijfers en 2 letters (vb. 1234ab)",
-							'ongHuisnr'=>"Huisnummer moet bestaan uit alleen nummers of een nummer met één of meerdere letters (vb. 123 of 123abc)",
+							'ongHuisnr'=>"Huisnummer moet bestaan uit alleen nummers",
+							'ongToevging'=>"Toevoeging mag alleen bestaan uit letters",
 							'ongWoonplts'=>"Woonplaats mag alleen bestaan uit letters",
 							'ongDatum'=>"Datum format moet dd-mm-yyyy zijn (vb. 23-01-2000)",
-							'toekDatum'=>"Datum ligt te ver in de toekomst",
-							'naamEmail'=>"'naam' gedeelte van uw e-mail moet minimaal 2 letters bevatten ('naam'@'domein'.nl)",
-							'domEmail'=>"'domein' gedeelte van uw e-mail moet minimaal 2 letters bevatten ('naam'@'domein'.nl)")
+							'toekDatum'=>"Datum ligt in de toekomst")
 				);
 
 $error = false;
@@ -45,6 +45,7 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 	$straat = stripslashes(trim(isset($_POST['straat'])?$_POST['straat']:NULL));
 	$postcode = stripslashes(trim(isset($_POST['postcode'])?$_POST['postcode']:NULL));
 	$huisnummer = stripslashes(trim(isset($_POST['huisnummer'])?$_POST['huisnummer']:NULL));
+	$toevoeging = stripslashes(trim(isset($_POST['toevoeging'])?$_POST['toevoeging']:NULL));
 	$woonplaats = stripslashes(trim(isset($_POST['woonplaats'])?$_POST['woonplaats']:NULL));
 	$email = stripslashes(trim(isset($_POST['email'])?$_POST['email']:NULL));
 	$ingDatum = stripslashes(trim($_POST['ingdatum']));
@@ -71,7 +72,7 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 			$error = true;
 		}
 	
-		if($valgebDatum == "Toekomst"){
+		if(strtotime($valgebDatum)>strtotime(date("Y-m-d"))){
 			$gebdateError = $errors['form']['toekDatum'];
 			$error = true;
 		}
@@ -79,28 +80,41 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 		$valgebDatum = NULL;
 	}
 	
-	//Valideer postcode
-	if(!empty($postcode)){
-		$checkPostcode = test_postcode($postcode);
-		if(!$checkPostcode){
-			$postcodeError = $errors['form']['ongPostcode'];
+	//Valideer straat
+	if(!empty($straat)){
+		if(!preg_match('/^[a-zA-Z]*$/', $straat)){
+			$huisnrError = $errors['form']['ongStraat'];
 			$error = true;
 		}
 	}
 
 	//Valideer huisnummer
 	if(!empty($huisnummer)){
-		$checkHuisnr = test_huisnr($huisnummer);
-		if(!$checkHuisnr){
+		if(!preg_match('/^[0-9]*$/', $huisnummer)){
 			$huisnrError = $errors['form']['ongHuisnr'];
+			$error = true;
+		}
+	}
+	
+	//Valideer toevoeging
+	if(!empty($toevoeging)) {
+		if(!preg_match('/^[a-zA-Z]*$/', $toevoeging)) {
+			$toevgingError = $errors['form']['ongToevging'];
+			$error = true;
+		}
+	}
+	
+	//Valideer postcode
+	if(!empty($postcode)){
+		if(!preg_match('/^(\d\d\d\d)[a-zA-Z][a-zA-Z]$/', $postcode)){
+			$postcodeError = $errors['form']['ongPostcode'];
 			$error = true;
 		}
 	}
 	
 	//Valideer woonplaats
 	if(!empty($woonplaats)){
-		$checkWoonplts = test_woonplaats($woonplaats);
-		if(!$checkWoonplts){
+		if(!preg_match('/^[a-zA-Z]+$/', $woonplaats)){
 		$woonpltsError = $errors['form']['ongWoonplts'];
 		$error = true;
 		}
@@ -114,12 +128,6 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 		$checkEmail = test_email($email);
 		if($checkEmail=="ongeldig"){
 			$emailError = $errors['form']['ongEmail'];
-			$error = true;
-		}elseif($checkEmail=="naam"){
-			$emailError = $errors['form']['naamEmail'];
-			$error = true;
-		}elseif($checkEmail=="domein"){
-			$emailError = $errors['form']['Email'];
 			$error = true;
 		}
 	}
@@ -150,19 +158,22 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 	
 	//Insert data in database
 	if($error == false){
-		$naamEsc = mysqli_real_escape_string($connect, $naam);
+		$naamEsc = mysqli_real_escape_string($connect, ucfirst(strtolower($naam)));
 		$tussenvoegsel = mysqli_real_escape_string($connect, $tussenvoegsel);
-		$achternaamEsc = mysqli_real_escape_string($connect, $achternaam);
-		$straatEsc = mysqli_real_escape_string($connect, $straat);
+		$achternaamEsc = mysqli_real_escape_string($connect, ucfirst(strtolower($achternaam)));
+		$straatEsc = mysqli_real_escape_string($connect, ucfirst(strtolower($straat)));
 		$postcodeEsc = mysqli_real_escape_string($connect, $postcode);
 		$huisnummerEsc = mysqli_real_escape_string($connect, $huisnummer);
-		$woonplaatsEsc = mysqli_real_escape_string($connect, $woonplaats);
+		$toevoegingEsc = mysqli_real_escape_string($connect, strtoupper($toevoeging));
+		$woonplaatsEsc = mysqli_real_escape_string($connect, ucfirst(strtolower($woonplaats)));
 		$geslachtEsc = mysqli_real_escape_string($connect, $geslacht);
 		$gebdatEsc = mysqli_real_escape_string($connect, $valgebDatum);
-		$emailEsc = mysqli_real_escape_string($connect, $email);
+		$emailEsc = mysqli_real_escape_string($connect, strtolower($email));
 		$sportonderdeelEsc = mysqli_real_escape_string($connect, ucfirst($_POST['sportonderdeel'])); 
 		$lesdagEsc = mysqli_real_escape_string($connect, ucfirst($_POST['lesdag']));
 		$ingdatEsc = mysqli_real_escape_string($connect, $valIngDatum);
+		
+		$huisToev = $huisnummerEsc.$toevoegingEsc;
 		
 		$ledenQuery = "INSERT INTO leden (ID, 
 											Voornaam, 
@@ -180,15 +191,15 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 											'$tussenvoegsel',
 											'$achternaamEsc',
 											'$straatEsc',
-											'$huisnummerEsc',
+											'$huisToev',
 											'$postcodeEsc',
 											'$woonplaatsEsc',
 											'$emailEsc',
-											'$valgebDatum',
+											'$gebdatEsc',
 											'$geslachtEsc')";
 		
 		//Retrieve latest person id
-		$ledenResult = mysqli_query($connect, $ledenQuery) or die("Er is iets mis gegeaan tijdens het invoeren van gegevens. Check of de database is aangemaakt en de tabel velden.");
+		$ledenResult = mysqli_query($connect, $ledenQuery) or die( "Er is iets mis gegeaan tijdens het invoeren van gegevens." . " " . mysqli_error($connect).".");
 		$ledenId = mysqli_insert_id($connect);
 			
 			if($ledenId != NULL || $ledenId > 0){
@@ -236,12 +247,11 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 								Ingangsdatum: " . $ingDatum ."\r\n",
 								"Van: info@omnisport.com");
 							
-						
-					
 					//voeg controle toe of mail verstuurd is
 					if(!$bevestiging || !$administratie) {
 						$message="Er is iets fout gegaan tijdens uw registratie. Een bericht is naar uw e-mail verstuurd.";
-						error_log(error_get_last(),3, "error_log.txt");
+						$lastError = error_get_last();
+						error_log($lastError['message'],3, "error_log.txt");
 					} else {
 
 						$message="Uw registratie is met success ontvangen. U ontvangt binnenkort een e-mail met bevestiging.";
@@ -308,13 +318,18 @@ if(isset($_POST['reset']) && $_POST['reset'] == "Reset"){
 		            <div id = "straat-huisnr">
 				            <span class = error><?php echo $straatError;?></span>
 				            <span class = error><?php echo $huisnrError;?></span>
+				            <span class = error><?php echo $toevgingError;?></span>
 		                    <div class = "straat">
-		                            <label for="form-straat">Straat:</label>
-		                            <input type="text" id="form-straat" name="straat" value="<?php if($error){echo htmlentities($_POST['straat']);}else{ echo "";}?>">
+	                            <label for="form-straat">Straat:</label>
+	                            <input type="text" id="form-straat" name="straat" value="<?php if($error){echo htmlentities($_POST['straat']);}else{ echo "";}?>">
 		                    </div>
 		                    <div class = "huisnr">
-		                            <label for="form-huisnummer">nr.:</label>
-		                            <input type="text" id="form-huisnummer" name="huisnummer" value="<?php if($error){echo htmlentities($_POST['huisnummer']);}else{ echo "";}?>">
+	                            <label for="form-huisnummer">nr.:</label>
+	                            <input type="number" max="9999" id="form-huisnummer" name="huisnummer" value="<?php if($error){echo htmlentities($_POST['huisnummer']);}else{ echo "";}?>">
+		                    </div>
+		                    <div class = "toevoeging">
+		                    	<label for="form-toevoeging">Toev.</label>
+		                    	<input type="text" id="form-toevoeging" maxlength="3" name="toevoeging" value="<?php if($error){echo htmlentities($_POST['toevoeging']);}else{ echo "";}?>">
 		                    </div>
 		            </div>
 		            
@@ -330,7 +345,7 @@ if(isset($_POST['reset']) && $_POST['reset'] == "Reset"){
 		
 		            <span class = error><?php echo $emailError;?></span>
 		            <label for="form-email">*E-mail:</label>
-		            <input type="text" id="form-email" name="email" value="<?php if($error){echo htmlentities($_POST['email']);}else{ echo "";}?>">
+		            <input type="email" id="form-email" name="email" value="<?php if($error){echo htmlentities($_POST['email']);}else{ echo "";}?>">
 		
 		            <span class = error><?php echo $ingdateError;?></span>
 		            <label for="form-ingdatum">*Ingangsdatum</label>
