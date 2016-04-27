@@ -24,15 +24,13 @@ $errors = array('form'=>array('gNaam'=>"U heeft geen naam ingevuld",
 							'gDatum'=>"U heeft geen datum opgegeven",
 							'gGeslacht'=>"Kies een geslacht",
 							'ongStraat'=>"Straatnaam mag alleen bestaan uit letters",
-							'ongEmail'=>"Geen geldig e-mail adress. E-mail moet eindigen op '.nl'",
+							'ongEmail'=>"E-mail moet op deze manier '2 letters @ 2 letters .nl' (vb. ab@bc.nl)",
 							'ongPostcode'=>"Postcode moet bestaan uit 4 cijfers en 2 letters (vb. 1234ab)",
 							'ongHuisnr'=>"Huisnummer moet bestaan uit alleen nummers",
 							'ongToevging'=>"Toevoeging mag alleen bestaan uit letters",
 							'ongWoonplts'=>"Woonplaats mag alleen bestaan uit letters",
 							'ongDatum'=>"Datum format moet dd-mm-yyyy zijn (vb. 23-01-2000)",
-							'toekDatum'=>"Datum ligt te ver in de toekomst",
-							'naamEmail'=>"'naam' gedeelte van uw e-mail moet minimaal 2 letters bevatten ('naam'@'domein'.nl)",
-							'domEmail'=>"'domein' gedeelte van uw e-mail moet minimaal 2 letters bevatten ('naam'@'domein'.nl)")
+							'toekDatum'=>"Datum ligt in de toekomst")
 				);
 
 $error = false;
@@ -74,7 +72,7 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 			$error = true;
 		}
 	
-		if($valgebDatum == "Toekomst"){
+		if(strtotime($valgebDatum) > strtotime(date('Y-m-d'))){
 			$gebdateError = $errors['form']['toekDatum'];
 			$error = true;
 		}
@@ -131,12 +129,6 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 		if($checkEmail=="ongeldig"){
 			$emailError = $errors['form']['ongEmail'];
 			$error = true;
-		}elseif($checkEmail=="naam"){
-			$emailError = $errors['form']['naamEmail'];
-			$error = true;
-		}elseif($checkEmail=="domein"){
-			$emailError = $errors['form']['Email'];
-			$error = true;
 		}
 	}
 	
@@ -176,7 +168,7 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 		$woonplaatsEsc = mysqli_real_escape_string($connect, ucfirst(strtolower($woonplaats)));
 		$geslachtEsc = mysqli_real_escape_string($connect, $geslacht);
 		$gebdatEsc = mysqli_real_escape_string($connect, $valgebDatum);
-		$emailEsc = mysqli_real_escape_string($connect, $email);
+		$emailEsc = mysqli_real_escape_string($connect, strtolower($email));
 		$sportonderdeelEsc = mysqli_real_escape_string($connect, ucfirst($_POST['sportonderdeel'])); 
 		$lesdagEsc = mysqli_real_escape_string($connect, ucfirst($_POST['lesdag']));
 		$ingdatEsc = mysqli_real_escape_string($connect, $valIngDatum);
@@ -203,7 +195,7 @@ if(isset($_POST['submit']) && $_POST['submit'] == 'Verstuur'){
 											'$postcodeEsc',
 											'$woonplaatsEsc',
 											'$emailEsc',
-											'$valgebDatum',
+											'$gebdatEsc',
 											'$geslachtEsc')";
 		
 		//Retrieve latest person id

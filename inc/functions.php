@@ -2,7 +2,7 @@
 //Check of email format klopt
 function test_email($email)
 {
-	$match_pattern = '/^[a-z]*[A-Z]*@[a-z]*[A-Z]*.nl$/';
+	$match_pattern = '/^[a-zA-Z]*[a-zA-Z]*@[a-zA-Z]*[a-zA-Z]*.nl$/';
 	$match = preg_match($match_pattern, $email);
 
 	if($match){
@@ -11,12 +11,8 @@ function test_email($email)
 		$name = $explode_result[0];
 		$domain =$explode_result_domain[0];
 		
-		if(strlen($name) < 2){
-			return "naam";
-		}elseif( strlen($domain) < 2){
-			return "domein";
-		}else{
-			return "goed";
+		if(strlen($name) < 2 || strlen($domain) < 2){
+			return "ongeldig";
 		}
 	}else{
 		return "ongeldig";
