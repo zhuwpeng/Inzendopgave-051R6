@@ -58,6 +58,23 @@ div.imgtext img{
 	text-align: left;
 }
 
+/*------- Error messages ---------*/
+.error{
+	display:block;
+	color:red;
+	margin: 5px 0px;
+}
+
+.errorMsg {
+	background-color: white;
+	position: absolute;
+	width: 100%;
+	top: 72px;
+	left: 0;
+	text-align: center;
+}
+
+/*--------- Form layout ----------*/
 .register-form{
 	text-align: center;
 	padding: 1%;
@@ -78,42 +95,8 @@ div.imgtext img{
 	clear: both;
 }
 
-.left-side,
-.right-side {
-	float: left;
-	display: inline-block;
-	margin: 0 2.5%;
-	margin-bottom: 10px;
-	width: 45%
-}
-
-.register-form .submit_reset{
-	margin: 10px auto;
-	text-align: center;
-}
-
-.straat-huisnr{
-	display: block;
-}
-
-.huisnr,
-.straat {
-	float: left;
-	display: inline-block;
-	margin-right: 3%;
-}
-
-.huisnr {
-	width: 25%;
-	margin-right: 0;
-}
-
-.straat {
-	width: 72%
-}
-
 select,
-input[type="password"],
+input[type="email"],
 input[type="number"],
 input[type="text"],
 input[type="date"]{
@@ -124,6 +107,43 @@ input[type="date"]{
 
 select {
 	margin-bottom: 12px;
+}
+
+.left-side,
+.right-side {
+	float: left;
+	display: inline-block;
+	margin: 0 2.5%;
+	margin-bottom: 10px;
+	width: 45%
+}
+
+
+/*--------- Huisnr, straat, toevoeging --------*/
+
+.straat-huisnr{
+	display: block;
+}
+
+.huisnr,
+.straat,
+.toevoeging {
+	float: left;
+	display: inline-block;
+	margin-right: 3%;
+}
+
+.huisnr {
+	width: 10%;
+}
+
+.straat {
+	width: 74%
+}
+
+.toevoeging {
+	width: 10%;
+	margin-right: 0;
 }
 
 .geslacht {
@@ -147,6 +167,11 @@ span{
 	text-align: center;
 }
 
+.register-form .submit_reset{
+	margin: 10px auto;
+	text-align: center;
+}
+
 .btn{
 	margin: 0 20px 0 0;
 }
@@ -155,17 +180,9 @@ span{
 	margin: 0;
 }
 
-.error{
-	display:block;
-	color:red;
-	margin: 5px 0px;
-}
 
-.errorMsg {
-	background-color: white;
-	position: absolute;
-	width: 100%;
-	top: 72px;
-	left: 0;
-	text-align: center;
-}
+
+
+
+
+

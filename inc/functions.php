@@ -23,38 +23,6 @@ function test_email($email)
 	}
 }
 
-//Check of postcode klopt
-function test_postcode($postcode)
-{
-	$match_pattern = '/^(\d\d\d\d)[a-zA-Z][a-zA-Z]$/';
-	$match = preg_match($match_pattern, $postcode);
-
-	if($match){
-		return true;
-	}
-}
-
-//Check of huisnummer klopt
-function test_huisnr($huisnr)
-{
-	$match_pattern = '/^[1-9][0-9]+[a-z]*$/';
-	$match = preg_match($match_pattern, $huisnr);
-
-	if($match){
-		return true;
-	}
-}
-
-//Check of woonplaats alleen letter bevat
-function test_woonplaats($woonplaats)
-{
-	$match_pattern = '/^[a-zA-Z]+$/';
-	$match = preg_match($match_pattern, $woonplaats);
-
-	if($match){
-		return true;
-	}
-}
 
 //Check of datum klopt
 function date_validation($inputdate){
@@ -81,9 +49,11 @@ function date_validation($inputdate){
 
 //Eigen error handler
 function error_msg($err_type, $err_msg, $err_file, $err_line){
-	echo"<div class = 'errorMsg'>
-			<p><b>Error:</b> Oeps er is iets fout gegaan op deze pagina! Probeer later nog eens aan te melden.<p>
-		</div>";
+	echo "<div class = 'errorMsg'>";
+	echo "<p><b>Error:</b> Oeps er is iets fout gegaan op deze pagina! Probeer later nog eens aan te melden.";
+	echo "Error type: $err_type: $err_msg in $err_file at line $err_line";
+	echo "</div>";
+	
 }
 
 /**
