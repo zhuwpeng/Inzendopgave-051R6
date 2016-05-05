@@ -51,6 +51,7 @@ div.imgtext{
 
 div.imgtext img{
 	display: block;
+	margin: 0 auto;
 	width:75%;
 }
 
@@ -58,7 +59,7 @@ div.imgtext img{
 	text-align: left;
 }
 
-/*------- Error messages ---------*/
+/*------- Messages ---------*/
 .error{
 	display:block;
 	color:red;
@@ -72,6 +73,11 @@ div.imgtext img{
 	top: 72px;
 	left: 0;
 	text-align: center;
+}
+
+.message {
+	text-align: center;	
+
 }
 
 /*--------- Form layout ----------*/
